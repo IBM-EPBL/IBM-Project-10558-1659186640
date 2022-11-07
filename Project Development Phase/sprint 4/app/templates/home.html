@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/home.css') }}">
+</head>
+
+<body>
+    <div class="dflex f-row nav">
+        <h3 class="navTitle">Diabetic Retinopathy Classification</h3>
+        <div class="pages">
+            <p class="page active">Home</p>
+            <p class="page"><a href="/login" class="no-decor">Login</a></p>
+            <p class="page"><a href="/register" class="no-decor">Register</a></p>
+        </div>
+    </div>
+    <div class="dflex f-col">
+        <img src="{{ url_for('static',filename='images/retinopathy.webp') }}" alt="retinopathy image" class="image">
+        <div class="dflex f-col desc">
+            <div class="title">
+                <p class="titleText">ABOUT PROJECT</p>
+                <span class="underline"></span>
+            </div>
+            <div class="dflex f-row">
+                <div class="dflex f-col descDiv">
+                    <h3>Problem</h3>
+                    <p class="text">Diabetic Retinopathy (DR) is a common complication of diabetes mellitus, which
+                        causes lesions on
+                        the retina that affect
+                        vision. If it is not detected early, it can lead to blindness. Unfortunately, DR is not a
+                        reversible process, and
+                        treatment only sustains vision. DR early detection and treatment can significantly reduce the
+                        risk of vision loss. The
+                        manual diagnosis process of DR retina fundus images by ophthalmologists is time, effort and
+                        cost-consuming and prone to
+                        misdiagnosis unlike computer-aided diagnosis systems.
+                    </p>
+                </div>
+                <div class="dflex f-col descDiv">
+                    <h3>Solution</h3>
+                    <p class="text">In this project, we eill be building a Transfer learning model that can detect and
+                        classify types of diabetic retinopathy. A web app is integrated with the model from where the
+                        user can upload a Diabetic Retinopathy image like Mild DR, severe DR, etc and see teh analysed
+                        results on User Interface
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
