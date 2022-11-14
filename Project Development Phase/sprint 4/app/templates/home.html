@@ -4,6 +4,90 @@
 <head>
     <title>Home</title>
     <link rel="stylesheet" href="{{ url_for('static',filename='css/home.css') }}">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            const resultDiv = document.getElementById('resultDiv')
+            const getInfoBtn = document.getElementById('getInfoBtn')
+            const getInform = document.forms[0]
+            getInfoBtn.addEventListener('click', function (e) {
+                e.preventDefault()
+                const options = {
+                    method: 'GET',
+                    headers: {
+                        'X-RapidAPI-Key': '84a69684femsh1e293486e06ba0cp1825d9jsn6aa7c5b37425',
+                        'X-RapidAPI-Host': 'dietagram.p.rapidapi.com'
+                    }
+                };
+                fetch(`https://dietagram.p.rapidapi.com/apiFood.php?name=${getInform["food"].value}`, options)
+                    .then(response => response.json())
+                    .then(response => {
+
+                        if (response.dishes.length > 0) {
+                            resultDiv.innerHTML = `<table class=table>
+                            <tr>
+                                <th>Name</th>
+                                <th>Calories</th>
+                                <th>Protien</th>
+                                <th>Fat</th>
+                                <th>carbon</th>
+                            </tr>`+
+                                response.dishes.map((el) =>
+                                    `<tr>
+                                        <td>${el.name}</td>
+                                        <td>${el.caloric}</td>
+                                        <td>${el.protein}</td>
+                                        <td>${el.fat}</td>
+                                        <td>${el.carbon}</td>
+                                    </tr>`
+                                ).join("") +
+                                `</table>`
+                        }
+                        else {
+                            window.alert("No Information found")
+                        }
+
+
+                    })
+                    .catch(err => window.alert("Maximum api calls reached"));
+            })
+
+            const getMedicinalDetails = document.getElementById('getMedicinalDetails')
+            getMedicinalDetails.addEventListener('click', function (e) {
+                e.preventDefault()
+                const form = document.forms[1]
+                const options = {
+                    method: 'GET',
+                    headers: {
+                        'X-RapidAPI-Key': '84a69684femsh1e293486e06ba0cp1825d9jsn6aa7c5b37425',
+                        'X-RapidAPI-Host': 'drug-info-and-price-history.p.rapidapi.com'
+                    }
+                };
+
+                fetch(`https://drug-info-and-price-history.p.rapidapi.com/1/druginfo?drug=${form["medicine"].value}`, options)
+                    .then(response => response.json())
+                    .then(response => {
+                        if (Array.isArray(response)) {
+                            resultDiv.innerHTML = `<table class=table>
+                            `+
+                                Object.entries(response[0]).map(([key, value]) =>
+                                    (key !== 'packaging' && key !== 'openfda') ?
+                                        `<tr>
+                                        <th>${key}</th>
+                                        <td>${key === "active_ingredients" ? value.map((el) => el.name).join(', ') : value}</td>
+                                    </tr>`: ''
+                                ).join("") +
+                                `</table>`
+                        }
+                        else {
+                            window.alert(response)
+                        }
+                    })
+                    .catch(err => window.alert(err));
+            })
+        });
+
+    </script>
 </head>
 
 <body>
@@ -48,6 +132,31 @@
             </div>
         </div>
     </div>
+    <div class="dflex f-row w-100 justify-space-evenly">
+        <div class="formContainer">
+            <form>
+                <h2>Get Info</h2>
+                <div style="margin-bottom: 15px;">
+                    <label for="food">Name of the food:</label>
+                    <input type="text" class="input" name="food" value="coke" required>
+                </div>
+                <button id="getInfoBtn" class="button input">Get Info</button>
+            </form>
+        </div>
+        <div class="formContainer">
+            <form>
+                <h2>Get Medicine Details</h2>
+                <div style="margin-bottom: 15px;">
+                    <label for="medicine">Name of the medicine:</label>
+                    <input type="text" class="input" name="medicine" value="paracetamol" required>
+                </div>
+                <button id="getMedicinalDetails" class="button input">Get Details</button>
+            </form>
+        </div>
+    </div>
+    <div class="resultDiv" id="resultDiv">
+    </div>
+
 </body>
 
 </html>
